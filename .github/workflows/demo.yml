@@ -50,7 +50,7 @@ jobs:
       - name: output content
         run: ls
   report:
-    needs: [lint, deploy]
+    needs: deploy
     if: failure()
     runs-on: ubuntu:latest
     steps:
