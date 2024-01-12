@@ -1,6 +1,6 @@
 name: Deploy website
 on:
-  pull_requet:
+  pull_request:
     types:
     - opened
     branches:
