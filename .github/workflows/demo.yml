@@ -1,8 +1,10 @@
 name: Deploy website
 on:
-  push:
+  pull_requet:
+    types:
+    - opened
     branches:
-      - dev
+    - 'master'
 jobs:
   test:
     runs-on: ubuntu-latest
