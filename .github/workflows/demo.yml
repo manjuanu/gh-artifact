@@ -1,8 +1,7 @@
 name: Deploy website
 on:
   push:
-    branches:
-      - master
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -14,7 +13,16 @@ jobs:
       - name: Lint code
         run: npm run lint
       - name: Test code
+        id: run-test
         run: npm run test
+      - name: upload test artifact
+        if: failure() && steps.run-test.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: test.json
+
+
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -25,9 +33,28 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: dist
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
-        run: echo "Deploying..."
+
+      - name: Get artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+      - name: output content
+        run: ls
+  report:
+    needs: deploy
+    if: failure()
+    runs-on: ubuntu:latest
+    steps:
+    - name: Output information
+      run: |
+        echo "something went wrong"
+        echo "${{github }}"
