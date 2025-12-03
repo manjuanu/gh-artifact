@@ -17,3 +17,12 @@ echo "displaying users"
 who
 echo "displaying who is logged in"
 whoami
+echo "displaying the current date and time"
+date
+echo "displaying the current directory"
+pwd
+echo "displaying the current user"
+whoami
+echo "displaying the current shell"
+echo $SHELL
+echo "displaying the current shell"
